@@ -3,7 +3,7 @@ LABEL org.opencontainers.image.authors="Kok How, Teh <funcoolgeeek@gmail.com>"
 ARG DEBIAN_FRONTEND=noninteractive
 RUN apt update -y --fix-missing
 RUN apt upgrade -y
-RUN apt install -y --no-install-recommends software-properties-common apt-transport-https curl sudo gnupg unzip ca-certificates cmake ninja-build build-essential mysql-client postgresql-client dnsutils wget git python3 python3-pip python3-tk docker-buildx valgrind libgtest-dev
+RUN apt install -y --no-install-recommends software-properties-common apt-transport-https curl sudo gnupg unzip ca-certificates cmake ninja-build build-essential mysql-client postgresql-client dnsutils wget git python3 python3-pip python3-tk docker-buildx valgrind libgtest-dev libtbb-dev
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 RUN curl -sL -o /tmp/awscliv2.zip https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip
 RUN unzip /tmp/awscliv2.zip -d /tmp
