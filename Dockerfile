@@ -18,9 +18,12 @@ RUN curl -sL -o /tmp/gcloud.tgz https://dl.google.com/dl/cloudsdk/channels/rapid
 RUN tar -xf /tmp/gcloud.tgz
 RUN ./google-cloud-sdk/install.sh -q
 RUN rm -f /tmp/gcloud.tgz
-ENV GOOGLE_TEST_VER=1.18.0
-RUN curl -sL -o /tmp/googletest.tar.gz https://github.com/google/googletest/releases/download/v$GOOGLE_TEST_VER/googletest-$GOOGLE_TEST_VER.tar.gz
-RUN tar zxvf /tmp/googletest.tar.gz -C /usr/src
-RUN mv /usr/src/googletest-$GOOGLE_TEST_VER /usr/src/googletest
+RUN wget -O- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB \
+    | gpg --dearmor | sudo tee /usr/share/keyrings/oneapi-archive-keyring.gpg > /dev/null
+    # add signed entry to apt sources and configure the APT client to use Intel repository:
+RUN echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi all main" | sudo tee /etc/apt/sources.list.d/oneAPI.list
+RUN apt update -y --fix-missing
+RUN apt install -y intel-oneapi-toolkit
+RUN echo "[ -f \"/opt/intel/oneapi/setvars.sh\" ] && . /opt/intel/oneapi/setvars.sh" >> /etc/profile
 #ENTRYPOINT ["bash"]
 CMD ["/bin/bash"]
